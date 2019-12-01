@@ -3,7 +3,7 @@ from jsonschema import validate, ValidationError
 
 from http import HTTPStatus
 
-from services import aggregate_telephone_numbers
+from services import aggregate_telephone_numbers_trie
 from .schemas import *
 
 
@@ -14,7 +14,7 @@ class AggregateNumbersHandler(BaseRestHandler):
             try:
                 validate(instance=request_body, schema=AGGREGATE_NUMBERS_POST_REQUEST_SCHEMA)
                 # From now on we can assume that request_body is a list of strings
-                response = aggregate_telephone_numbers(request_body)
+                response = aggregate_telephone_numbers_trie(request_body)
                 if response.get("error"):
                     self.set_status(HTTPStatus.SERVICE_UNAVAILABLE)
                 self.write(response)

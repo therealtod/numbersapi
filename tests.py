@@ -1,5 +1,6 @@
 from unittest import TestCase
 from unittest import mock
+import timeit
 
 from services import *
 
@@ -47,5 +48,10 @@ class TestServices(TestCase):
                 "Banking": 1
             }
         }
-        aggregated_numbers = aggregate_telephone_numbers(numbers)
+        aggregated_numbers = aggregate_telephone_numbers_trie(numbers)
         self.assertEqual(aggregated_numbers, expected)
+    
+
+    def test_aggregate_telephone_numbers_performance(self):
+        elapsed_time = timeit.timeit(self.test_aggregate_telephone_numbers, number=100)/100
+        print (elapsed_time)
