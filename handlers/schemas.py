@@ -3,8 +3,8 @@ AGGREGATE_NUMBERS_POST_REQUEST_SCHEMA = {
     "type": "array",
     "items": {
         "type": "string"
-        }
     }
+}
 
 AGGREGATE_NUMBERS_POST_RESPONSE_SCHEMA = {
     "$schema": "http://json-schema.org/draft-07/schema#",
@@ -13,6 +13,6 @@ AGGREGATE_NUMBERS_POST_RESPONSE_SCHEMA = {
         "type": "object",
         "additionalProperties": {
             "type": "number"
-            }
         }
+    }
 }

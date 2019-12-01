@@ -4,9 +4,10 @@ import json
 from traceback import format_exception
 from http import HTTPStatus
 
+
 class BaseRestHandler(RequestHandler):
     def write_error(self, status_code, **kwargs):
-        error={}
+        error = {}
         error["Traceback"] = "".join(format_exception(*kwargs["exc_info"]))
         self.write(error)
 
@@ -17,4 +18,3 @@ class BaseRestHandler(RequestHandler):
             self.set_status(HTTPStatus.BAD_REQUEST)
             self.finish({"error": "The body of the request doesn't seem to be in JSON format"})
             return None
-    

@@ -1,6 +1,7 @@
 import requests
 from requests.exceptions import ConnectionError
 
+
 prefixes = []
 
 with open("resources/prefixes.txt", "r") as f:
@@ -8,12 +9,7 @@ with open("resources/prefixes.txt", "r") as f:
         prefixes.append(line.strip())
 
 def get_business_sector(number):
-    result = {}
-    try:
-        response= requests.get(f"https://challenge-business-sector-api.meza.talkdeskstg.com/sector/{number}")
-    except ConnectionError:
-        result
-
+    response = requests.get(f"https://challenge-business-sector-api.meza.talkdeskstg.com/sector/{number}")
     return response.json().get("sector")
 
 def standardize_number(number_string):
@@ -31,7 +27,13 @@ def aggregate_telephone_numbers(numbers_list):
         for prefix in prefixes:
             if standardized_number.startswith(prefix):
                 result[prefix] = result.get(prefix, {})
-                sector = get_business_sector(number)
+                try:
+                    sector = get_business_sector(number)
+                except ConnectionError as err:
+                    result = {
+                        "error": str(err)
+                    }
+                    return result
                 result[prefix][sector] = result[prefix].get(sector, 0) + 1
                 continue
     return result

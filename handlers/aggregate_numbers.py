@@ -1,13 +1,10 @@
 from handlers.base_rest_handler import BaseRestHandler
-from .schemas import AGGREGATE_NUMBERS_POST_REQUEST_SCHEMA
-
-from services import aggregate_telephone_numbers
-
 from jsonschema import validate, ValidationError
 
-import json
 from http import HTTPStatus
 
+from services import aggregate_telephone_numbers
+from .schemas import *
 
 
 class AggregateNumbersHandler(BaseRestHandler):
@@ -18,6 +15,8 @@ class AggregateNumbersHandler(BaseRestHandler):
                 validate(instance=request_body, schema=AGGREGATE_NUMBERS_POST_REQUEST_SCHEMA)
                 # From now on we can assume that request_body is a list of strings
                 response = aggregate_telephone_numbers(request_body)
+                if response.get("error"):
+                    self.set_status(HTTPStatus.SERVICE_UNAVAILABLE)
                 self.write(response)
             except ValidationError:
                 self.set_status(HTTPStatus.BAD_REQUEST)
